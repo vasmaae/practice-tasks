@@ -15,7 +15,8 @@ namespace Practice_1
         private static string[] tasks = { 
             "Найти серии с максимальной длиной для положительных чисел и отрицательных чисел. Вывести с какой позиции начинается каждая серия и длины серий",
             "Знаки значений всех элементов серии положительные. Перенести после первого отрицательного элемента массива серию с наименьшей длиной.",
-            "nothing"
+            "nothing",
+            "Удалить первую серию в массиве"
         };
 
         public static string GetCurrentTask()
@@ -198,6 +199,62 @@ namespace Practice_1
                     }
 
                 }
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                res += arr[i] + " ";
+            }
+
+            return res;
+        }
+
+        public static string Task4(int[] arr)
+        {
+            int size = arr.Length / 2;
+            string res = "";
+
+            int seriaLength = 1;
+            int startIndex = -1;
+            bool seria = false;
+
+            for (int i = 1; i < size; i++)
+            {
+                if (arr[i] % arr[i - 1] == 0)
+                {
+                    seria = true;
+                    seriaLength++;
+
+                }
+                else
+                {
+                    if (seria)
+                    {
+                        startIndex = i - seriaLength;
+                        break;
+                    }
+                    seria = false;
+                }
+
+
+            }
+            if (startIndex == -1)
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    res += arr[i] + " ";
+                }
+
+                return res;
+            }
+
+            for (int i = startIndex; i < startIndex + seriaLength; i++)
+            {
+                for (int j = startIndex; j < size; j++)
+                {
+                    arr[j] = arr[j + 1];
+                }
+                size--;
             }
 
             for (int i = 0; i < size; i++)
