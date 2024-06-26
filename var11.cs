@@ -168,3 +168,80 @@ for (int j = 0; j < _sizeColumns; j++)
         j++;
     }
 }
+
+
+//Номер 6
+
+//не готово
+int counter = 1;
+for (int k = 0; k < _sizeRows; k++)
+{
+    counter = _sizeRows - 3;
+    for (int j = 2; j < _sizeColumns; j++)
+    {
+        for (int i = _sizeRows - 1; i > counter + 1; i--)
+        {
+            if (array2d[i, j] < array2d[i - 1, j])
+            {
+                int temp = array2d[i, j];
+                array2d[i, j] = array2d[i - 1, j];
+                array2d[i - 1, j] = temp;
+            }
+        }
+        counter--;
+    }
+    counter = _sizeRows - 3;
+    for (int j = 1; j < _sizeColumns - 1; j++)
+    {
+        for (int i = _sizeRows - 1; i > counter + 1; i--)
+        {
+            if (array2d[i, j] > array2d[i, j + 1])
+            {
+                int temp = array2d[i, j];
+                array2d[i, j] = array2d[i, j + 1];
+                array2d[i, j + 1] = temp;
+            }
+        }
+        counter--;
+    }
+    counter = _sizeRows - 2;
+    for (int j = 1; j < _sizeColumns - 1; j++)
+    { 
+        for (int i = counter; i < _sizeRows - 1; i++)
+        {
+            if (array2d[i + 1, j] < array2d[i, j + 1])
+            {
+                int temp = array2d[i + 1, j];
+                array2d[i + 1, j] = array2d[i, j + 1];
+                array2d[i, j + 1] = temp;
+            }
+        }
+        counter--;
+    }
+}
+
+//готово
+
+for (int k = 0; k < _sizeRows * 2; k++)
+{
+    int counter = 0;
+    for (int i = _sizeRows - 1; i >= 1; i--)
+    {
+        for (int j = _sizeColumns - 1; j > counter + 1; j--)
+        {
+            if (array2d[i, j] < array2d[i, j - 1])
+            {
+                int temp = array2d[i, j];
+                array2d[i, j] = array2d[i, j - 1];
+                array2d[i, j - 1] = temp;
+            }
+        }
+        if (array2d[i, counter + 1] < array2d[i - 1, _sizeColumns - 1] && i - 1 != 0)
+        {
+            int temp = array2d[i, counter + 1];
+            array2d[i, counter + 1] = array2d[i - 1, _sizeColumns - 1];
+            array2d[i - 1, _sizeColumns - 1] = temp;
+        }
+        counter++;
+    }
+}
