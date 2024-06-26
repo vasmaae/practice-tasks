@@ -1,0 +1,330 @@
+string Task1() //первый номер
+{
+    additionalArray = new int[10]; // Размер фиксирован
+    string res = "";
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < Math.Abs(array[i]).ToString().Length; j++)
+        {
+            additionalArray[Int32.Parse(Math.Abs(array[i]).ToString()[j].ToString())] += 1;
+        }
+    }
+    for (int i = 0; i < additionalArray.Length; i++)
+    {
+        res += ($"{i}:{additionalArray[i]} ");
+    }
+    return res;
+}
+
+string Task2() // второй номер
+{
+    string res = ""; 
+    int count = 1;
+    int maxCount = 1;
+    int serStart = 0;
+    int serEnd = 0;
+    int currentStart = 0;
+    int evenInd = -1;
+    bool changable = true;
+    for(int i = 1; i < size; i++)
+    {
+        if (Math.Abs(array[i]) % 2 == 0 && changable)
+        {
+            evenInd = i;
+            changable = false;
+        }
+        if (Math.Abs(array[i]) % Math.Abs(array[i - 1]) == 0)
+        {
+
+            count++;
+            if (count > maxCount)
+            {
+                maxCount = count;
+                serEnd = i;
+                serStart = currentStart;
+            }
+        }
+        else
+        {
+            count = 1;
+            currentStart = i;
+        }
+    }
+    if (evenInd == 0)
+    {
+        return "Не найдено";
+    }
+    if (serStart > evenInd)
+    {
+        for (int l = 0; l < (serStart - evenInd - 1); l++)
+        {
+            int temp = array[evenInd + 1];
+            for (int i = evenInd + 1; i < serEnd; i++)
+            {
+                array[i] = array[i + 1];
+            }
+            array[serEnd] = temp;
+        }
+    }
+    else
+    {
+        for (int l = 0; l < (evenInd - serEnd); l++)
+        {
+            int temp = array[evenInd];
+            for (int i = evenInd; i > serStart; i--)
+            {
+                array[i] = array[i - 1];
+            }
+            array[serStart] = temp;
+        }
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        res += array[i] + " ";
+    }
+    return res + "\t" + $"*{maxCount} * {serStart}/{serEnd}";
+}
+
+string Task3() // третий номер
+{
+    bool isStarted = false;
+    for (int i = 1; i < size; i++)
+    {
+        if (array[i] == array[i - 1])
+        {
+            isStarted = true;
+        }
+        else
+        {
+            if (isStarted)
+            {
+                isStarted = false;
+                for(int j = size; j >= i; j--)
+                {
+                    array[j] = array[j - 1];
+                }
+                size++;
+                i++;
+            }
+        }
+    }
+    if (isStarted)
+    {
+        size++;
+        array[size - 1] = array[size - 2];
+    }
+    string res = "";
+    for (int i = 0; i < size; i++)
+    {
+        res += array[i] + " ";
+    }
+    return res;
+}
+
+string Task4() // четвертый номер
+{
+    int serStart = 0;
+    int serEnd = 0;
+    int currentStart = 0;
+    int count = 1;
+    int maxCount = 1;
+    for (int i = 1; i < size; i++)
+    {
+        if (array[i] == array[i - 1])
+        {
+
+            count++;
+            if (count > maxCount)
+            {
+                maxCount = count;
+                serEnd = i;
+                serStart = currentStart;
+            }
+        }
+        else
+        {
+            count = 1;
+            currentStart = i;
+        }
+    }
+    if (maxCount == 1)
+    {
+        return "Cерия не найдена";
+    }
+    for(int l = 0; l < (serEnd - serStart + 1); l++)
+    {
+        for(int i = serStart; i< size - 1; i++)
+        {
+            array[i] = array[i + 1];
+        }
+        size--;
+    }
+
+    string res = "";
+    for (int i = 0; i < size; i++)
+    {
+        res += array[i] + " ";
+    }
+    return res + $"*{serStart} {serEnd}*";
+}
+
+string Task5() // пятый номер
+{
+    int max = -100, min = 100, maxInd = -1, minInd = -1;
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            if (arrayDouble[j][i] > max)
+            {
+                max = arrayDouble[j][i];
+                maxInd = i;
+            }
+            else if (arrayDouble[j][i] < min)
+            {
+                min = arrayDouble[j][i];
+                minInd = i;
+            }
+        }
+    }
+
+
+
+    string res = $"{maxInd}/{minInd}" + Environment.NewLine;
+    for (int i = 0; i < width; i++)
+    {
+        bool isContains = false;
+        for (int j = 0; j < height; j++)
+        {
+            if (isPrime(arrayDouble[j][i]))
+            {
+                isContains = true;
+                break;
+            }
+        }
+        if (isContains)
+        {
+            if (minInd > i)
+            {
+                minInd++;
+            }
+            if (maxInd > i)
+            {
+                minInd++;
+            }
+            for (int j = width - 1; j > i; j--)
+            {
+                for (int k = 0; k < height; k++)
+                {
+                    arrayDouble[k][j + 1] = arrayDouble[k][j];
+                }
+            }
+            width++;
+
+            for (int j = 0; j < height; j++)
+            {
+                arrayDouble[j][i + 1] = arrayDouble[j][maxInd] - arrayDouble[j][minInd];
+            }
+            i++;
+        }
+    }
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            res += string.Format("{0, 6}", arrayDouble[i][j]);
+        }
+        res += Environment.NewLine;
+    }
+    return res + Environment.NewLine;
+}
+          
+bool isSorted(int[][] arr) // вспомогательная функция для шестого номера
+{
+    for(int i = 1; i < width; i++)
+    {
+        if (arr[0][i] < arr[0][i - 1])
+        {
+            return false;
+        }
+        if (arr[height - 1][i] > arr[height - 1][i - 1])
+        {
+            return false;
+        } 
+    }
+    for (int i = 1; i < height; i++)
+    {
+        if (arr[i][width - 1] < arr[i - 1][width - 1])
+        {
+            return false;
+        }
+        if(i > 1 && arr[i][0] > arr[i - 1][0])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+bool isPrime(int n) // вспомогательная функция для шестого номера
+{
+    n = Math.Abs(n);
+    if (n == 0 || n == 1) return false;
+    for (int i = 2; i < n; i++)
+    {
+        if (n % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+      
+string Task6()//шестой номер
+{
+    for(int l = 0; l < 10; l++)
+    {
+        for(int i = width - 1; i >= 0; i--)
+        {
+            for(int j = 0; j < i; j++)
+            {
+                if (arrayDouble[0][j] > arrayDouble[0][j + 1])
+                {
+                    (arrayDouble[0][j + 1], arrayDouble[0][j]) = (arrayDouble[0][j], arrayDouble[0][j + 1]);
+                }
+                if (arrayDouble[height - 1][j] < arrayDouble[height - 1][j + 1])
+                {
+                    (arrayDouble[height - 1][j + 1], arrayDouble[height - 1][j]) = (arrayDouble[height - 1][j], arrayDouble[height - 1][j + 1]);
+                }
+            }
+        }
+        for (int i = height - 1; i >= 0; i--)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                if (arrayDouble[j][width - 1] > arrayDouble[j + 1][width - 1])
+                {
+                    (arrayDouble[j + 1][width - 1], arrayDouble[j][width - 1]) = (arrayDouble[j][width - 1], arrayDouble[j + 1][width - 1]);
+                }
+                if (j > 0)
+                {
+                    if (arrayDouble[j][0] < arrayDouble[j + 1][0])
+                    {
+                        (arrayDouble[j + 1][0], arrayDouble[j][0]) = (arrayDouble[j][0], arrayDouble[j + 1][0]);
+                    }
+                }
+            }
+        }
+    }
+    string res = "";
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            res += string.Format("{0, 6}", arrayDouble[i][j]);
+        }
+        res += Environment.NewLine;
+    }
+    return res + Environment.NewLine;
+}
