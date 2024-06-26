@@ -221,8 +221,9 @@ for (int k = 0; k < _sizeRows; k++)
 }
 
 //готово
-
-for (int k = 0; k < _sizeRows * 2; k++)
+//_sizeRows и _sizeColumns одинаковы должны быть, их можно записать просто как size
+//_sizeRows * _sizeRows получено опытным путём
+for (int k = 0; k < _sizeRows * _sizeRows; k++)
 {
     int counter = 0;
     for (int i = _sizeRows - 1; i >= 1; i--)
