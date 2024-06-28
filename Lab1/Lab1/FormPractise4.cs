@@ -26,7 +26,11 @@ public partial class FormPractise4 : Form
         while (true)
         {
             if (firstSum > secondSum) break;
-            dataGridView1.Rows.Add(year++, firstSum, secondSum);
+            dataGridView1.Rows.Add(year++, "", "", "", "");
+            dataGridView1.Rows.Add("", firstSum, "", "", "");
+            dataGridView1.Rows.Add("", "", firstSum * firstPercent, "", "");
+            dataGridView1.Rows.Add("", "", "", secondSum, "");
+            dataGridView1.Rows.Add("", "", "", "", secondSum * secondPercent);
             firstSum  += firstSum * firstPercent;
             secondSum += secondSum * secondPercent;
         }
